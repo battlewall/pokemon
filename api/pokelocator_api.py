@@ -23,12 +23,12 @@ def encode(cellid):
     return ''.join(output)
 
 def getNeighbors():
-    origin = CellId.from_lat_lng(LatLng.from_degrees(FLOAT_LAT, FLOAT_LONG)).parent(15)
+    origin = CellId.from_lat_lng(LatLng.from_degrees(FLOAT_LAT, FLOAT_LONG)).parent(20)
     walk = [origin.id()]
     # 10 before and 10 after
     next = origin.next()
     prev = origin.prev()
-    for i in range(10):
+    for i in range(15):
         walk.append(prev.id())
         walk.append(next.id())
         next = next.next()
