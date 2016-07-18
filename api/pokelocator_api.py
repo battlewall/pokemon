@@ -446,7 +446,8 @@ def main(location=None):
             # print(diff)
             difflat = diff.lat().degrees
             difflng = diff.lng().degrees
-            direction = (('N' if difflat >= 0 else 'S') if abs(difflat) > 1e-4 else '')  + (('E' if difflng >= 0 else 'W') if abs(difflng) > 1e-4 else '')
+            direction = (('N' if difflat >= 0 else 'N') if abs(difflat) > 1e-4 else '')  + (('E' if difflng >= 0 else 'E') if abs(difflng) > 1e-4 else '')
+            direction = (('S' if difflat >= 0 else 'S') if abs(difflat) > 1e-4 else '')  + (('W' if difflng >= 0 else 'W') if abs(difflng) > 1e-4 else '')
 
             nearby_pokes.append({
                 "id": poke.pokemon.PokemonId,
