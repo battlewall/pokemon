@@ -28,7 +28,7 @@ def getNeighbors():
     # 10 before and 10 after
     next = origin.next()
     prev = origin.prev()
-    for i in range(10):
+    for i in range(30):
         walk.append(prev.id())
         walk.append(next.id())
         next = next.next()
