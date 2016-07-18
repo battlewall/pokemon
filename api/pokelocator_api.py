@@ -454,7 +454,7 @@ def main(location=None):
                 "name": pokemons[poke.pokemon.PokemonId - 1]['Name'],
                 "latitude": poke.Latitude,
                 "longitude": poke.Longitude,
-                "time_left": poke.TimeTillHiddenMs / 1000,
+                "time_left": poke.TimeTillHiddenMs / 100,
                 "distance": int(origin.get_distance(other).radians * 6366468.241830914),
                 "direction": direction
             })
