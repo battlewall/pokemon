@@ -28,7 +28,7 @@ def getNeighbors():
     # 10 before and 10 after
     next = origin.next()
     prev = origin.prev()
-    for i in range(30):
+    for i in range(10):
         walk.append(prev.id())
         walk.append(next.id())
         next = next.next()
@@ -454,7 +454,7 @@ def main(location=None):
                 "name": pokemons[poke.pokemon.PokemonId - 1]['Name'],
                 "latitude": poke.Latitude,
                 "longitude": poke.Longitude,
-                "time_left": poke.TimeTillHiddenMs / 100,
+                "time_left": poke.TimeTillHiddenMs / 1000,
                 "distance": int(origin.get_distance(other).radians * 6366468.241830914),
                 "direction": direction
             })
