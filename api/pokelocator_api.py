@@ -408,13 +408,13 @@ def main(location=None):
         original_long = FLOAT_LONG
         parent = CellId.from_lat_lng(LatLng.from_degrees(FLOAT_LAT, FLOAT_LONG)).parent(15)
 
-        h = heartbeat(api_endpoint, access_token, response, login_type)
+        h = heartbeat(api_endpoint, access_token, response)
         hs = [h]
         seen = set([])
         for child in parent.children():
             latlng = LatLng.from_point(Cell(child).get_center())
             set_location_coords(latlng.lat().degrees, latlng.lng().degrees, 0)
-            hs.append(heartbeat(api_endpoint, access_token, response, login_type))
+            hs.append(heartbeat(api_endpoint, access_token, response))
         set_location_coords(original_lat, original_long, 0)
 
         visible = []
@@ -439,6 +439,7 @@ def main(location=None):
                 print("Within one step of %s (%sm %s from you):" % (other, int(origin.get_distance(other).radians * 6366468.241830914), direction))
                 for poke in cell.NearbyPokemon:
                     print('    (%s) %s' % (poke.PokedexNumber, pokemons[poke.PokedexNumber - 1]['Name']))
+
         print('')
         for poke in visible:
             other = LatLng.from_degrees(poke.Latitude, poke.Longitude)
@@ -446,22 +447,16 @@ def main(location=None):
             # print(diff)
             difflat = diff.lat().degrees
             difflng = diff.lng().degrees
-            direction = (('N' if difflat >= 0 else 'N') if abs(difflat) > 1e-4 else '')  + (('E' if difflng >= 0 else 'E') if abs(difflng) > 1e-4 else '')
-            direction = (('S' if difflat >= 0 else 'S') if abs(difflat) > 1e-4 else '')  + (('W' if difflng >= 0 else 'W') if abs(difflng) > 1e-4 else '')
-
-            nearby_pokes.append({
-                "id": poke.pokemon.PokemonId,
-                "name": pokemons[poke.pokemon.PokemonId - 1]['Name'],
-                "latitude": poke.Latitude,
-                "longitude": poke.Longitude,
-                "time_left": poke.TimeTillHiddenMs / 1000,
-                "distance": int(origin.get_distance(other).radians * 6366468.241830914),
-                "direction": direction
-            })
+            direction = (('N' if difflat >= 0 else 'S') if abs(difflat) > 1e-4 else '')  + (('E' if difflng >= 0 else 'W') if abs(difflng) > 1e-4 else '')
 
             print("(%s) %s is visible at (%s, %s) for %s seconds (%sm %s from you)" % (poke.pokemon.PokemonId, pokemons[poke.pokemon.PokemonId - 1]['Name'], poke.Latitude, poke.Longitude, poke.TimeTillHiddenMs / 1000, int(origin.get_distance(other).radians * 6366468.241830914), direction))
 
-        break
+        print('')
+        walk = getNeighbors()
+        next = LatLng.from_point(Cell(CellId(walk[2])).get_center())
+        if raw_input('The next cell is located at %s. Keep scanning? [Y/n]' % next) in {'n', 'N'}:
+            break
+        set_location_coords(next.lat().degrees, next.lng().degrees, 0)
 
     return nearby_pokes
 
