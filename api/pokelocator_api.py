@@ -439,6 +439,12 @@ def main(location=None):
                 print("Within one step of %s (%sm %s from you):" % (other, int(origin.get_distance(other).radians * 6366468.241830914), direction))
                 for poke in cell.NearbyPokemon:
                     print('    (%s) %s' % (poke.PokedexNumber, pokemons[poke.PokedexNumber - 1]['Name']))
+        
+        print('')
+        walk = getNeighbors()
+        next = LatLng.from_point(Cell(CellId(walk[2])).get_center())
+        if raw_input('The next cell is located at %s. Keep scanning? [Y/n]' % next) in {'n', 'N'}:
+            break
 
         print('')
         for poke in visible:
